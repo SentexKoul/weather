@@ -1,0 +1,1 @@
+export const UPDATE_SELECTED_DAY = state => state.selected_day
