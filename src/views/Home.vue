@@ -1,6 +1,5 @@
 <template lang="pug">
-    .container
-        router-view
+    router-view
 </template>
 
 <script>
@@ -28,15 +27,5 @@ export default {
             margin 0
         img
             filter invert(100%)
-
-    .container
-        margin 0 auto
-        min-height 100vh
-        width 100%
-        overflow hidden
-        @media (min-width: 576px)
-            width 540px
-        @media (min-width: 768px)
-            width 720px
 </style>
 

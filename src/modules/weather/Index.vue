@@ -16,7 +16,7 @@
 
 <script>
 import FormCode from './_components/FormCode'
-// import weatherApi from "./_api/weatherApi.js"
+import weatherApi from "./_api/weatherApi.js"
 import SelectedDay from "./_components/SelectedDay.vue"
 import { mapGetters, mapActions } from "vuex"
 
@@ -37,7 +37,11 @@ export default {
         }
     },
     mounted() {
-        this.updateSelectedDay(this.getDays[0])
+        this.updateSelectedDay(this.getDays[0]);
+        weatherApi.getWeather()
+        .then(response => {
+            console.log(response)
+        })
     },
     components: {
         FormCode,
