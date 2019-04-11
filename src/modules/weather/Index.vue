@@ -1,7 +1,7 @@
 <template lang="pug">
     .weather
         .weather__header
-            p Сегодня, 21 апреля 2016
+            p {{ new Date() | moment("DD MMMM YYYY") }}
         .weather__main
                 SelectedDay
         .weather__footer
@@ -21,15 +21,22 @@ import SelectedDay from "./_components/SelectedDay.vue"
 import { mapGetters, mapActions } from "vuex"
 
 export default {
+    data() {
+        return {
+            // today : 
+        }
+    },
     computed: {
         ...mapGetters({
             getDays: "weather/getDays",
-            getSelectedDay: "weather/getSelectedDay"
+            getSelectedDay: "weather/getSelectedDay",
+            getWeather: "weather/getWeather"
         })
     },
     methods: {
         ...mapActions({
-            updateSelectedDay: "weather/updateSelectedDay"
+            updateSelectedDay: "weather/updateSelectedDay",
+            updateWeather: "weather/updateWeather"
         }),
         selectDay(day) {
             this.getSelectedDay.active = false;
@@ -40,8 +47,14 @@ export default {
         this.updateSelectedDay(this.getDays[0]);
         weatherApi.getWeather()
         .then(response => {
-            console.log(response)
+            // console.log(response)
+            this.updateWeather(response.data)
+            for(let item of response.data.list) {
+                let date = new Date(item.dt * 1000)
+                console.log(date.toString())
+            }
         })
+        console.log(this.getWeather())
     },
     components: {
         FormCode,

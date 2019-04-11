@@ -1,4 +1,5 @@
 export default {
+    weather: null,
     selected_day: null,
     days: [
         {

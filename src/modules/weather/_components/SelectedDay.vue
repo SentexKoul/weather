@@ -1,12 +1,12 @@
 <template lang="pug">
-    .weather__content(class="weather-content", v-if="getSelectedDay")
-        .weather-content__description
+    .weather__content(v-if="getSelectedDay")
+        .weather__description
             p {{ getSelectedDay.temp_description }}
-        .weather-content__icon
+        .weather__icon
             img(:src="getSelectedDay.icon")
-        .weather-content__temperature
-            p {{ getSelectedDay.temp }}&deg;
-            span Казань
+        .weather__temperature
+            p {{ getSelectedDay.temp }}
+            span {{ getWeather.city.name }}
         
 </template>
 
@@ -17,16 +17,18 @@ import {mapGetters} from "vuex"
 export default {
     computed: {
         ...mapGetters({
-            getSelectedDay: "weather/getSelectedDay"
+            getSelectedDay: "weather/getSelectedDay",
+            getWeather: "weather/getWeather"
         })
     }
 }
 </script>
 
 <style lang="stylus" scoped>
-    .weather-content
-        margin auto
-        text-align center
+    .weather
+        &__content
+            margin auto
+            text-align center
         &__description
             p
                 font-size 24px
