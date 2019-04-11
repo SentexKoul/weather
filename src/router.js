@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
 
 const Weather = () => import('./modules/weather/Index.vue')
 
@@ -12,14 +11,8 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      component: Home,
-      children: [
-        {
-          path: '/',
-          name: 'weather',
-          component: Weather
-        }
-      ]
+      name: 'weather',
+      component: Weather
     }
   ]
 })
