@@ -11,11 +11,9 @@
                 img(:src="day.icon")
                 p {{ day.date }}
             // transition(name="slide")
-            //     FormCode
 </template>
 
 <script>
-import FormCode from './_components/FormCode'
 import weatherApi from "./_api/weatherApi.js"
 import SelectedDay from "./_components/SelectedDay.vue"
 import { mapGetters, mapActions } from "vuex"
@@ -57,7 +55,6 @@ export default {
         console.log(this.getWeather())
     },
     components: {
-        FormCode,
         SelectedDay
     }
 }
