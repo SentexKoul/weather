@@ -1,16 +1,16 @@
 <template lang="pug">
     .weather
         .weather__header
-            p {{ new Date() | moment("DD MMMM YYYY") }}
+            p Taday {{ new Date() | moment("DD MMMM YYYY") }}
         .weather__main
-                SelectedDay
+                transition(:name="transitionName")
+                SelectedDay(:city="city")
         .weather__footer
-            .weather__item(v-for="day in getDays", 
-                                   :class="{ 'weather__item--active': day.active}",
-                                   @click="selectDay(day)")
-                img(:src="day.icon")
-                p {{ day.date }}
-            // transition(name="slide")
+            .weather__item(v-for="day in getDays",
+                           :class="{ 'weather__item--active': day.active}"
+                           @click="selectDay(day)")
+                img(:src="day.img")
+                p {{ day.dt | moment("DD MMMM") }}
 </template>
 
 <script>
@@ -21,7 +21,8 @@ import { mapGetters, mapActions } from "vuex"
 export default {
     data() {
         return {
-            // today : 
+            transitionName: null,
+            city: ''
         }
     },
     computed: {
@@ -34,25 +35,25 @@ export default {
     methods: {
         ...mapActions({
             updateSelectedDay: "weather/updateSelectedDay",
-            updateWeather: "weather/updateWeather"
+            updateWeather: "weather/updateWeather",
+            updateDays: "weather/updateDays"
         }),
         selectDay(day) {
             this.getSelectedDay.active = false;
+            console.log(day)
             this.updateSelectedDay(day)
         }
     },
     mounted() {
-        this.updateSelectedDay(this.getDays[0]);
         weatherApi.getWeather()
         .then(response => {
-            // console.log(response)
-            this.updateWeather(response.data)
-            for(let item of response.data.list) {
-                let date = new Date(item.dt * 1000)
-                console.log(date.toString())
+            for(let day of response.data.list) {
+                this.updateDays(day)
             }
+
+            this.updateSelectedDay(this.getDays[0]);
+            this.city = response.data.city.name
         })
-        console.log(this.getWeather())
     },
     components: {
         SelectedDay

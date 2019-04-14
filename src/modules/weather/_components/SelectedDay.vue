@@ -1,25 +1,34 @@
 <template lang="pug">
     .weather__content(v-if="getSelectedDay")
         .weather__description
-            p {{ getSelectedDay.temp_description }}
+            p {{ getSelectedDay.weather[0].description }}
         .weather__icon
-            img(:src="getSelectedDay.icon")
+            img(:src="getSelectedDay.img")
         .weather__temperature
-            p {{ getSelectedDay.temp }}
-            span {{ getWeather.city.name }}
+            p {{ kelvinToCelsius(getSelectedDay.temp.day) }}
+                span &deg; 
+            span {{ city }}
         
 </template>
 
 <script>
-// import weatherApi from '../_api/weatherApi.js'
+import weatherApi from '../_api/weatherApi.js'
 import {mapGetters} from "vuex"
 
 export default {
+    props: [
+        'city'
+    ],
     computed: {
         ...mapGetters({
-            getSelectedDay: "weather/getSelectedDay",
-            getWeather: "weather/getWeather"
-        })
+            getSelectedDay: "weather/getSelectedDay"
+        }),
+    },
+    methods: {
+        kelvinToCelsius(temp) {
+            // Переводим кельвины в цельсия, удаляем дробную часть
+            return Math.trunc(temp - 273)
+        }
     }
 }
 </script>
@@ -53,6 +62,12 @@ export default {
                 font-size 116px
                 line-height 140px
                 font-weight 300
+                span
+                    position relative
+                    top -30px
+                    font-size 48px
+                    vertical-align top
+
             span
                 font-size 19px
                 font-weight 300
