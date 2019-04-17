@@ -76,24 +76,20 @@ export default {
 <style lang="stylus" scoped>
     .out-left-enter-active, .out-left-leave-active,
     .out-right-enter-active, .out-right-leave-active,
-    .fade-enter-active, .fade-leave-active {
-        transition: all .5s ease;
-    }
+    .fade-enter-active, .fade-leave-active
+        transition: all .5s ease
+        
     .out-left-enter, .out-left-leave-to,
     .out-right-enter, .out-right-leave-to, 
-    .fade-enter, .fade-leave-to {
+    .fade-enter, .fade-leave-to
         opacity: 0;
-        position: absolute;
-        top 50%
-        left 50%
-        transform translate(-50%, -50%)
-    }
-    .out-left-leave-to, .out-right-enter {
-        transform: translateX(-3em);
-    }
-    .out-left-enter, .out-right-leave-to {
-        transform: translateX(3em);
-    }
+        position: absolute 
+
+    .out-left-leave-to, .out-right-enter
+        transform: translateX(-3em)
+
+    .out-left-enter, .out-right-leave-to
+        transform: translateX(3em)
 
     .weather
         &__content
