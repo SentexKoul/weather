@@ -57,12 +57,6 @@ export default {
         kelvinToCelsius(temp) {
             return Math.trunc(temp - 273)
         },
-        prev() {
-            this.slide(-1)
-        },
-        next() {
-            this.slide(1)
-        },
         slide(direction) {
             this.direction = direction
             this.startIndex = this.startIndex + direction
