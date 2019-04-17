@@ -15,7 +15,6 @@
 </template>
 
 <script>
-// import weatherApi from '../_api/weatherApi.js'
 import {mapGetters} from "vuex"
 
 export default {
@@ -72,11 +71,11 @@ export default {
     },
     watch: {
         getSelectedDay: function() {
-            console.log('Выбран ' + this.getSelectedDay.id)
-            console.log('firstItem ' + this.firstItem.id)
-            this.getSelectedDay.id >= this.firstItem.id ? this.slide(1) : this.slide(-1)
+            let slideRange = this.getSelectedDay.id - this.firstItem.id
+            this.slide(slideRange)
         }
     }
+    
 }   
 </script>
 
@@ -135,7 +134,6 @@ export default {
                     top -30px
                     font-size 48px
                     vertical-align top
-
             span
                 font-size 19px
                 font-weight 300

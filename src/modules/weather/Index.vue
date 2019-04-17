@@ -1,7 +1,7 @@
 <template lang="pug">
     .weather
         .weather__header
-            p Taday {{ getSelectedDay.dt | moment("DD MMMM YYYY") }}
+            p(v-if="getSelectedDay") Taday {{ getSelectedDay.dt | moment("DD MMMM YYYY") }}
         .weather__main
             SelectedDay(:city="city")
         .weather__footer
@@ -97,25 +97,4 @@ export default {
                 font-size 10px
                 font-weight 600
                 margin 0
-
-
-    .login
-        padding-top 28px
-        text-align center
-        &__header
-            img
-                width 251px
-        &__forms
-            display flex
-            .slide-enter
-                transform translateX(100vw)
-                position absolute
-                opacity 0
-            .slide-enter-active, .slide-leave-active
-                transition .5s
-                opacity 1
-            .slide-leave-to
-                transform translateX(-100vw)
-                position absolute
-                opacity 0
 </style>
