@@ -1,7 +1,7 @@
 <template lang="pug">
     .weather
         .weather__header
-            p Taday {{ new Date() | moment("DD MMMM YYYY") }}
+            p Taday {{ getSelectedDay.dt | moment("DD MMMM YYYY") }}
         .weather__main
             SelectedDay(:city="city")
         .weather__footer
@@ -37,8 +37,7 @@ export default {
             updateDays: "weather/updateDays"
         }),
         selectDay(day) {
-            this.getSelectedDay.active = false;
-            console.log(this.getDays.indexOf(day))
+            this.getSelectedDay.active = false
             this.updateSelectedDay(day)
         }
     },

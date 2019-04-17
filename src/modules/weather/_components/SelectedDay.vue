@@ -11,16 +11,11 @@
                 p(:key="firstItem.id") {{ kelvinToCelsius(firstItem.temp.day) }}
                     span &deg; 
             span {{ city }}
-            button(@click="prev") &lsaquo;
-            button(@click="next") &rsaquo;
-            button(@click="prev") 1
-            button(@click="next") 2
-            button(@click="prev") 3
         
 </template>
 
 <script>
-import weatherApi from '../_api/weatherApi.js'
+// import weatherApi from '../_api/weatherApi.js'
 import {mapGetters} from "vuex"
 
 export default {
@@ -69,41 +64,42 @@ export default {
         next() {
             this.slide(1)
         },
-        comparisonId() {
-            if(this.getSelectedDay.id > this.firstItem.id) {
-                console.log('more');
-                this.slide(-1)
-            } else {
-                console.log('less');
-                this.slide(1)
-            }
-        },
         slide(direction) {
             this.direction = direction
             this.startIndex = this.startIndex + direction
         },
         limit: (x, y) => x % y
+    },
+    watch: {
+        getSelectedDay: function() {
+            console.log('Выбран ' + this.getSelectedDay.id)
+            console.log('firstItem ' + this.firstItem.id)
+            this.getSelectedDay.id >= this.firstItem.id ? this.slide(1) : this.slide(-1)
+        }
     }
-}
+}   
 </script>
 
 <style lang="stylus" scoped>
     .out-left-enter-active, .out-left-leave-active,
     .out-right-enter-active, .out-right-leave-active,
     .fade-enter-active, .fade-leave-active {
-        transition: all .3s ease;
+        transition: all .5s ease;
     }
     .out-left-enter, .out-left-leave-to,
     .out-right-enter, .out-right-leave-to, 
     .fade-enter, .fade-leave-to {
         opacity: 0;
         position: absolute;
+        top 50%
+        left 50%
+        transform translate(-50%, -50%)
     }
     .out-left-leave-to, .out-right-enter {
-        transform: translateX(-2.5em);
+        transform: translateX(-3em);
     }
     .out-left-enter, .out-right-leave-to {
-        transform: translateX(2.5em);
+        transform: translateX(3em);
     }
 
     .weather
