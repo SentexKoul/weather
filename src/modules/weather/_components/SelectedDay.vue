@@ -1,13 +1,18 @@
 <template lang="pug">
     .weather__content(v-if="getSelectedDay")
         .weather__description
-            p {{ getSelectedDay.weather[0].description }}
+            transition(:name="transition")
+                p(:key="firstItem") {{ firstItem.weather[0].description }}
         .weather__icon
-            img(:src="getSelectedDay.img")
+            transition(:name="transition")
+                img(:src="firstItem.img", :key="firstItem")
         .weather__temperature
-            p {{ kelvinToCelsius(getSelectedDay.temp.day) }}
-                span &deg; 
+            transition(:name="transition")
+                p(:key="firstItem") {{ kelvinToCelsius(firstItem.temp.day) }}
+                    span &deg; 
             span {{ city }}
+            button(@click="prev") &lsaquo;
+            button(@click="next") &rsaquo;
         
 </template>
 
@@ -16,24 +21,78 @@ import weatherApi from '../_api/weatherApi.js'
 import {mapGetters} from "vuex"
 
 export default {
+    data() {
+        return {
+            prevLength: 3,
+            startIndex: 0,
+            direction: 1
+        }
+    },
     props: [
         'city'
     ],
     computed: {
         ...mapGetters({
-            getSelectedDay: "weather/getSelectedDay"
+            getSelectedDay: "weather/getSelectedDay",
+            getDays: "weather/getDays",
         }),
+        shouldFade({ getDays, prevLength }) {
+            return prevLength === 0 || getDays.length === 0 
+        },
+        transition({ shouldFade, direction }) {
+            return shouldFade ? 'fade': direction > 0 ? 'out-left': 'out-right'
+        },
+        adjustedIndex({ limit, getDays, startIndex }) { 
+            const itemCount = getDays.length
+            const adjustedStart = limit(startIndex, itemCount)
+            const adjusted = adjustedStart < 0 ? itemCount + adjustedStart : adjustedStart
+            return adjusted
+        },
+        shifted({ getDays, adjustedIndex }) {
+            const left = getDays.slice(0, adjustedIndex)
+            const right = getDays.slice(adjustedIndex)
+            return [...right, ...left]
+        },
+        firstItem: ({ shifted }) => shifted[0]
     },
     methods: {
         kelvinToCelsius(temp) {
-            // Переводим кельвины в цельсия, удаляем дробную часть
             return Math.trunc(temp - 273)
+        },
+        prev() {
+            this.slide(-1)
+        },
+        next() {
+            this.slide(1)
+        },
+        slide(direction) {
+            this.direction = direction
+            this.startIndex = this.startIndex + direction
+        },
+            limit: (x, y) => x % y
         }
-    }
 }
 </script>
 
 <style lang="stylus" scoped>
+    .out-left-enter-active, .out-left-leave-active,
+    .out-right-enter-active, .out-right-leave-active,
+    .fade-enter-active, .fade-leave-active {
+        transition: all .3s ease;
+    }
+    .out-left-enter, .out-left-leave-to,
+    .out-right-enter, .out-right-leave-to, 
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
+        position: absolute;
+    }
+    .out-left-leave-to, .out-right-enter {
+        transform: translateX(-2.5em);
+    }
+    .out-left-enter, .out-right-leave-to {
+        transform: translateX(2.5em);
+    }
+
     .weather
         &__content
             margin auto
