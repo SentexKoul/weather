@@ -1,18 +1,21 @@
 <template lang="pug">
-    .weather__content(v-if="getSelectedDay")
+    .weather__content(v-if="firstItem")
         .weather__description
             transition(:name="transition")
-                p(:key="firstItem") {{ firstItem.weather[0].description }}
+                p(:key="firstItem.id") {{ firstItem.weather[0].description }}
         .weather__icon
             transition(:name="transition")
-                img(:src="firstItem.img", :key="firstItem")
+                img(:src="firstItem.img", :key="firstItem.id")
         .weather__temperature
             transition(:name="transition")
-                p(:key="firstItem") {{ kelvinToCelsius(firstItem.temp.day) }}
+                p(:key="firstItem.id") {{ kelvinToCelsius(firstItem.temp.day) }}
                     span &deg; 
             span {{ city }}
             button(@click="prev") &lsaquo;
             button(@click="next") &rsaquo;
+            button(@click="prev") 1
+            button(@click="next") 2
+            button(@click="prev") 3
         
 </template>
 
@@ -29,12 +32,13 @@ export default {
         }
     },
     props: [
-        'city'
+        'city',
+        'dayId'
     ],
     computed: {
         ...mapGetters({
-            getSelectedDay: "weather/getSelectedDay",
             getDays: "weather/getDays",
+            getSelectedDay: "weather/getSelectedDay"
         }),
         shouldFade({ getDays, prevLength }) {
             return prevLength === 0 || getDays.length === 0 
@@ -65,12 +69,21 @@ export default {
         next() {
             this.slide(1)
         },
+        comparisonId() {
+            if(this.getSelectedDay.id > this.firstItem.id) {
+                console.log('more');
+                this.slide(-1)
+            } else {
+                console.log('less');
+                this.slide(1)
+            }
+        },
         slide(direction) {
             this.direction = direction
             this.startIndex = this.startIndex + direction
         },
-            limit: (x, y) => x % y
-        }
+        limit: (x, y) => x % y
+    }
 }
 </script>
 

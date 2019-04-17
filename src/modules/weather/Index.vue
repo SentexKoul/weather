@@ -3,8 +3,7 @@
         .weather__header
             p Taday {{ new Date() | moment("DD MMMM YYYY") }}
         .weather__main
-                transition(:name="transitionName")
-                SelectedDay(:city="city")
+            SelectedDay(:city="city")
         .weather__footer
             .weather__item(v-for="day in getDays",
                            :class="{ 'weather__item--active': day.active}"
@@ -21,7 +20,6 @@ import { mapGetters, mapActions } from "vuex"
 export default {
     data() {
         return {
-            transitionName: null,
             city: ''
         }
     },
@@ -40,7 +38,7 @@ export default {
         }),
         selectDay(day) {
             this.getSelectedDay.active = false;
-            console.log(day)
+            console.log(this.getDays.indexOf(day))
             this.updateSelectedDay(day)
         }
     },
@@ -48,6 +46,7 @@ export default {
         weatherApi.getWeather()
         .then(response => {
             for(let day of response.data.list) {
+                day.id = response.data.list.indexOf(day)
                 this.updateDays(day)
             }
 
