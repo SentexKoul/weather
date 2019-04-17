@@ -1,7 +1,7 @@
 <template lang="pug">
     .weather
         .weather__header
-            p(v-if="getSelectedDay") Taday {{ getSelectedDay.dt | moment("DD MMMM YYYY") }}
+            p(v-if="getSelectedDay" :data-text="dateDetail") {{ getSelectedDay.dt | moment("DD MMMM YYYY") }}
         .weather__main
             SelectedDay(:city="city")
         .weather__footer
@@ -28,7 +28,13 @@ export default {
             getDays: "weather/getDays",
             getSelectedDay: "weather/getSelectedDay",
             getWeather: "weather/getWeather"
-        })
+        }),
+        dateDetail() {
+            let detail = ''
+            this.getSelectedDay.id == 0 ? detail = 'Today ' :
+            this.getSelectedDay.id == 1 ? detail = 'Tomorrow ' : detail = ''
+            return detail
+        }
     },
     methods: {
         ...mapActions({
@@ -71,6 +77,8 @@ export default {
                 line-height 48px
                 text-align center
                 margin 0
+                &:before
+                    content attr(data-text)
         &__main
             background-color #21a5da
             display flex
