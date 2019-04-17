@@ -1,12 +1,16 @@
 <template lang="pug">
   #app
-    router-view
+    Weather
 </template>
 
 <script>
+import Weather from './modules/weather/Index.vue'
 
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    Weather
+  }
 }
 </script>
 
